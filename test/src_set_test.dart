@@ -2,9 +2,7 @@ import 'dart:collection';
 import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
-import 'package:serverless/imgix.dart';
-import 'package:serverless/url_builder.dart';
-import 'package:serverless/url_helper.dart';
+import 'package:imgix/imgix.dart';
 import 'package:test/test.dart';
 
 void main() {
