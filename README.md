@@ -1,4 +1,4 @@
-# Imgix Dart
+# Imgix Dart Client
 
 <!-- ix-docs-ignore -->
 ![imgix logo](https://assets.imgix.net/sdk-imgix-logo.svg)
