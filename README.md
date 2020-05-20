@@ -1,6 +1,8 @@
 # Imgix Dart
-A library for Dart developers.
 
+A Dart client library for generating URLs with imgix.
+
+![Build](https://github.com/amondnet/imgix.dart/workflows/Build/badge.svg?branch=master)
 [![codecov](https://codecov.io/gh/amondnet/imgix.dart/branch/master/graph/badge.svg)](https://codecov.io/gh/amondnet/imgix.dart)
 
 ## Usage

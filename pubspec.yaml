@@ -1,5 +1,5 @@
 name: imgix
-description: A Dart client library for generating URLs with imgix
+description: A Dart client library for generating URLs with imgix.
 version: 1.0.0
 homepage: https://github.com/amondnet/imgix.dart
 
