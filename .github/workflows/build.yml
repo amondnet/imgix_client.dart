@@ -5,6 +5,10 @@ on: [push, pull_request]
 jobs:
   build_dart_packages:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        package: [""]
+        version: ["latest", "dev"]
 
     container:
       image: google/dart:${{ matrix.version }}
