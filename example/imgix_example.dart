@@ -1,4 +1,4 @@
-import 'package:imgix/imgix.dart';
+import 'package:imgix_client/imgix_client.dart';
 
 void main() {
   var urlBuilder = UrlBuilder('example.imgix.net');

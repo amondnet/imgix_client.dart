@@ -1,6 +1,6 @@
 import 'dart:collection';
 
-import 'package:imgix/imgix.dart';
+import 'package:imgix_client/imgix_client.dart';
 import 'package:test/test.dart';
 
 void main() {
