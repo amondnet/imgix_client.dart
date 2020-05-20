@@ -29,7 +29,7 @@ dependencies:
 A simple usage example:
 
 ```dart
-import 'package:imgix/imgix_client.dart';
+import 'package:imgix_client/imgix_client.dart';
 
 void main() {
   var urlBuilder = UrlBuilder('demos.imgix.net');
@@ -44,7 +44,7 @@ void main() {
 HTTPS support is available by default. However, if you need HTTP support, call setUseHttps on the builder:
 
 ```dart
-import 'package:imgix/imgix_client.dart';
+import 'package:imgix_client/imgix_client.dart';
 
 void main() {
   var builder = UrlBuilder('demos.imgix.net');
@@ -65,7 +65,7 @@ To produce a signed URL, you must enable secure URLs on your source and then
 provide your signature key to the URL builder.
 
 ```dart
-import 'package:imgix/imgix_client.dart';
+import 'package:imgix_client/imgix_client.dart';
 
 void main() {
   var builder = UrlBuilder('demos.imgix.net');
@@ -86,7 +86,7 @@ void main() {
 The imgix-java library allows for generation of custom `srcset` attributes, which can be invoked through `createSrcSet()`. By default, the `srcset` generated will allow for responsive size switching by building a list of image-width mappings.
 
 ```dart
-import 'package:imgix/imgix_client.dart';
+import 'package:imgix_client/imgix_client.dart';
 
 void main() {
   var ub = UrlBuilder('demos.imgix.net', true, 'my-token', false);
@@ -109,7 +109,7 @@ https://demos.imgix.net/bridge.png?w=8192&s=152551ce4ec155f7a03f60f762a1ca33 819
 In cases where enough information is provided about an image's dimensions, `createSrcSet()` will instead build a `srcset` that will allow for an image to be served at different resolutions. The parameters taken into consideration when determining if an image is fixed-width are `w` (width), `h` (height), and `ar` (aspect ratio). By invoking `createSrcSet()` with either a width **or** the height and aspect ratio (along with `fit=crop`, typically) provided, a different `srcset` will be generated for a fixed-size image instead.
 
 ```dart
-import 'package:imgix/imgix_client.dart';
+import 'package:imgix_client/imgix_client.dart';
 
 void main() {
   var ub = UrlBuilder('demos.imgix.net', true, 'my-token', false);
