@@ -1,7 +1,7 @@
+# Imgix Dart
 A library for Dart developers.
 
-Created from templates made available by Stagehand under a BSD-style
-[license](https://github.com/dart-lang/stagehand/blob/master/LICENSE).
+[![codecov](https://codecov.io/gh/amondnet/imgix.dart/branch/master/graph/badge.svg)](https://codecov.io/gh/amondnet/imgix.dart)
 
 ## Usage
 
@@ -10,8 +10,9 @@ A simple usage example:
 ```dart
 import 'package:imgix/imgix.dart';
 
-main() {
-  var awesome = new Awesome();
+void main() {
+  var urlBuilder = UrlBuilder('example.imgix.net');
+  print('awesome: ${urlBuilder.createURL('image/file.png')}');
 }
 ```
 
@@ -19,4 +20,4 @@ main() {
 
 Please file feature requests and bugs at the [issue tracker][tracker].
 
-[tracker]: http://example.com/issues/replaceme
+[tracker]: https://github.com/amondnet/imgix.dart/issues
