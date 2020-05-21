@@ -5,9 +5,11 @@
 
 A Dart client library for generating URLs with imgix.
 
+[![pub](https://badgen.net/pub/v/imgix_client)](https://pub.dev/packages/imgix_client)
 ![Build](https://github.com/amondnet/imgix.dart/workflows/Build/badge.svg?branch=master)
 [![codecov](https://codecov.io/gh/amondnet/imgix.dart/branch/master/graph/badge.svg)](https://codecov.io/gh/amondnet/imgix.dart)
 [![License](https://img.shields.io/github/license/amondnet/imgix.dart)](https://github.com/amondnet/imgix.dart/blob/master/LICENSE)
+[![HitCount](http://hits.dwyl.com/amondnet/imgix_client.svg)](http://hits.dwyl.com/amondnet/imgix_client)
 
 ---
 - [Install](#install)
