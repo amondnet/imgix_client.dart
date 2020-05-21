@@ -1,3 +1,7 @@
+## 1.0.0+3
+
+- dependency update
+
 ## 1.0.0+2
 
 - docs: example
