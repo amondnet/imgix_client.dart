@@ -1,3 +1,7 @@
+## 2.0.0
+
+- feat: null safety
+
 ## 1.0.0+3
 
 - dependency update

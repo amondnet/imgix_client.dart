@@ -8,13 +8,13 @@ import 'package:test/test.dart';
 void main() {
   group('srcSet', () {
     Map<String, String> params;
-    var srcsetSplit;
-    var srcsetWidthSplit;
-    var srcsetHeightSplit;
-    var srcsetAspectRatioSplit;
-    var srcsetWidthAndHeightSplit;
-    var srcsetWidthAndAspectRatioSplit;
-    var srcsetHeightAndAspectRatioSplit;
+    late var srcsetSplit;
+    late var srcsetWidthSplit;
+    late var srcsetHeightSplit;
+    late var srcsetAspectRatioSplit;
+    late var srcsetWidthAndHeightSplit;
+    late var srcsetWidthAndAspectRatioSplit;
+    late var srcsetHeightAndAspectRatioSplit;
     setUp(() {
       String srcset,
           srcsetWidth,
@@ -99,14 +99,14 @@ void main() {
         8192
       ];
 
-      String generatedWidth;
+      String? generatedWidth;
       var index = 0;
       int widthInt;
 
       for (var src in srcsetSplit) {
         generatedWidth = src.split(' ')[1];
         widthInt =
-            int.parse(generatedWidth.substring(0, generatedWidth.length - 1));
+            int.parse(generatedWidth!.substring(0, generatedWidth.length - 1));
         expect(widthInt, targetWidths[index]);
         index++;
       }
@@ -131,16 +131,16 @@ void main() {
     /// a 17% testing threshold is used to account for rounding
     test('testNoParametersDoesNotIncreaseMoreThan17Percent', () {
       final INCREMENT_ALLOWED = .17;
-      String width;
+      String? width;
       int widthInt, prev;
 
       // convert and store first width (typically: 100)
       width = srcsetSplit[0].split(' ')[1];
-      prev = int.parse(width.substring(0, width.length - 1));
+      prev = int.parse(width!.substring(0, width.length - 1));
 
       for (var src in srcsetSplit) {
         width = src.split(' ')[1];
-        widthInt = int.parse(width.substring(0, width.length - 1));
+        widthInt = int.parse(width!.substring(0, width.length - 1));
 
         assert((widthInt / prev) < (1 + INCREMENT_ALLOWED));
         prev = widthInt;
@@ -214,11 +214,11 @@ void main() {
     });
 
     test('testWidthIncludesDPRParam', () {
-      String src;
+      String? src;
 
       for (var i = 0; i < srcsetWidthSplit.length; i++) {
         src = srcsetWidthSplit[i].split(' ')[0];
-        assert(src.contains('dpr=${i + 1}'));
+        assert(src!.contains('dpr=${i + 1}'));
       }
     });
     test('testWidthSignsUrls', () {
@@ -293,12 +293,12 @@ void main() {
     });
     test('testHeightDoesNotIncreaseMoreThan17Percent', () {
       final INCREMENT_ALLOWED = .17;
-      String width;
+      String? width;
       int widthInt, prev;
 
       // convert and store first width (typically: 100)
       width = srcsetHeightSplit[0].split(' ')[1];
-      prev = int.parse(width.substring(0, width.length - 1));
+      prev = int.parse(width!.substring(0, width.length - 1));
 
       for (String src in srcsetHeightSplit) {
         width = src.split(' ')[1];
@@ -364,7 +364,7 @@ void main() {
       }
     });
     test('testWidthAndHeightIncludesDPRParam', () {
-      String src;
+      String? src;
 
       for (var i = 0; i < srcsetWidthAndHeightSplit.length; i++) {
         src = srcsetWidthAndHeightSplit[i].split(' ')[0];
@@ -451,12 +451,12 @@ void main() {
 
     test('testAspectRatioDoesNotIncreaseMoreThan17Percent', () {
       final INCREMENT_ALLOWED = .17;
-      String width;
+      String? width;
       int widthInt, prev;
 
       // convert and store first width (typically: 100)
       width = srcsetAspectRatioSplit[0].split(' ')[1];
-      prev = int.parse(width.substring(0, width.length - 1));
+      prev = int.parse(width!.substring(0, width.length - 1));
 
       for (String src in srcsetAspectRatioSplit) {
         width = src.split(' ')[1];
@@ -527,7 +527,7 @@ void main() {
       }
     });
     test('testWidthAndAspectRatioIncludesDPRParam', () {
-      String src;
+      String? src;
 
       for (var i = 0; i < srcsetWidthAndAspectRatioSplit.length; i++) {
         src = srcsetWidthAndAspectRatioSplit[i].split(' ')[0];
@@ -572,7 +572,7 @@ void main() {
     });
 
     test('testHeightAndAspectRatioIncludesDPRParam', () {
-      String src;
+      String? src;
 
       for (var i = 0; i < srcsetHeightAndAspectRatioSplit.length; i++) {
         src = srcsetHeightAndAspectRatioSplit[i].split(' ')[0];

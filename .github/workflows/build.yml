@@ -29,7 +29,7 @@ jobs:
         #working-directory: ${{ matrix.package }}
         run: |
           pub run test
-          pub run test_coverage --badge false
+          pub run test_cov
 
       - name: Upload coverage to codecov
         uses: codecov/codecov-action@v1

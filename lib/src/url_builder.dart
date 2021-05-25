@@ -51,7 +51,7 @@ class UrlBuilder {
 
   final String domain;
   bool useHttps;
-  String signKey;
+  String? signKey;
   final bool includeLibraryParam;
 
   UrlBuilder(this.domain,
@@ -66,7 +66,7 @@ class UrlBuilder {
     }
   }
 
-  String createURL(String path, [Map<String, String> params]) {
+  String createURL(String path, [Map<String, String>? params]) {
     params ??= {};
     var scheme = useHttps ? 'https' : 'http';
     if (includeLibraryParam) {
@@ -77,7 +77,7 @@ class UrlBuilder {
 
   static List<int> targetWidths(int begin, int end, int tol) {
     return computeTargetWidths(
-        begin?.toDouble(), end?.toDouble(), tol?.toDouble());
+        begin.toDouble(), end.toDouble(), tol.toDouble());
   }
 
   /// Create a srcset given a `path` and a map of `params`.
@@ -98,15 +98,15 @@ class UrlBuilder {
   ///
 
   String createSrcSet(String path,
-      {Map<String, String> params,
+      {Map<String, String>? params,
       int begin = MIN_WIDTH,
       int end = MAX_WIDTH,
       int tol = SRCSET_WIDTH_TOLERANCE,
       bool disableVariableQuality = false,
-      Iterable<int> targets}) {
+      Iterable<int>? targets}) {
     params ??= SplayTreeMap();
     if (targets?.isNotEmpty == true) {
-      return createSrcSetPairs(path, params, targets);
+      return createSrcSetPairs(path, params, targets!);
     } else if (isDpr(params)) {
       return createSrcSetDPR(path, params, disableVariableQuality);
     } else {
@@ -155,7 +155,7 @@ class UrlBuilder {
     var resolutions = <int>[];
     if (begin == end) {
       // `begin` has not been mutated; cast back to `int`.
-      resolutions.add(begin?.toInt());
+      resolutions.add(begin.toInt());
       return resolutions;
     }
 

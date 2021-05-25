@@ -7,7 +7,7 @@ class UrlHelper {
   final String _domain;
   String _path;
   final String _scheme;
-  final String _signKey;
+  final String? _signKey;
   final Map<String, String> _parameters;
 
   UrlHelper(this._domain, this._path,
@@ -77,7 +77,7 @@ class UrlHelper {
 
     if (isNotBlank(_signKey)) {
       var delim = query == '' ? '' : '?';
-      var toSign = _signKey + _path + delim + query;
+      var toSign = _signKey! + _path + delim + query;
       var signature = md5.convert(utf8.encode(toSign)).toString();
 
       if (query.isNotEmpty) {
@@ -133,10 +133,6 @@ class UrlHelper {
   }
 
   static String decodeURIComponent(String s) {
-    if (s == null) {
-      return null;
-    }
-
     var result;
 
     try {
