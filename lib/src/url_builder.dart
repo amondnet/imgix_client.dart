@@ -1,15 +1,16 @@
 import 'dart:collection';
 
+import 'package:built_collection/built_collection.dart';
 import 'package:quiver/strings.dart';
 
 import 'url_helper.dart';
 
 class UrlBuilder {
-  static final String VERSION = '1.0.0';
-  static final String DOMAIN_REGEX =
+  static final String version = '1.0.0';
+  static final String domainRegex =
       '^(?:[a-z\\d\\-_]{1,62}\\.){0,125}(?:[a-z\\d](?:\\-(?=\\-*[a-z\\d])|[a-z]|\\d){0,62}\\.)[a-z\\d]{1,63}\$';
 
-  static final SRCSET_TARGET_WIDTHS = [
+  static final srcsetTargetWidths = [
     100,
     116,
     135,
@@ -43,39 +44,39 @@ class UrlBuilder {
     8192
   ];
   static final List<int> sss = <int>[];
-  static const int SRCSET_WIDTH_TOLERANCE = 8;
-  static const int MIN_WIDTH = 100;
-  static const int MAX_WIDTH = 8192;
-  static final DPR_QUALITIES = [75, 50, 35, 23, 20];
-  static final TARGET_RATIOS = [1, 2, 3, 4, 5];
+  static const int srcsetWidthTolerance = 8;
+  static const int minWidth = 100;
+  static const int maxWidth = 8192;
+  static final dprQualities = [75, 50, 35, 23, 20];
+  static final targetRatios = [1, 2, 3, 4, 5];
 
   final String domain;
-  bool useHttps;
+  final bool useHttps;
   String? signKey;
   final bool includeLibraryParam;
 
   UrlBuilder(this.domain,
-      [this.useHttps = true, this.signKey, this.includeLibraryParam = true]) {
-    var domainPattern = RegExp(DOMAIN_REGEX);
+      {this.useHttps = true, this.signKey, this.includeLibraryParam = true}) {
+    final domainPattern = RegExp(domainRegex);
     if (isBlank(domain)) {
       throw ArgumentError.value(
           domain, 'domain', 'At lease one domain must be passed to URLBuilder');
     } else if (!domainPattern.hasMatch(domain)) {
       throw ArgumentError.value(domain, 'domain',
-          'Domain must be passed in as a fully-qualified domain name and should not include a protocol or any path element, i.e. \"example.imgix.net\".');
+          'Domain must be passed in as a fully-qualified domain name and should not include a protocol or any path element, i.e. "example.imgix.net".');
     }
   }
 
   String createURL(String path, [Map<String, String>? params]) {
-    params ??= {};
-    var scheme = useHttps ? 'https' : 'http';
+    final newParam = Map.of(params ??= {});
+    final scheme = useHttps ? 'https' : 'http';
     if (includeLibraryParam) {
-      params['ixlib'] = 'dart-$VERSION';
+      newParam['ixlib'] = 'dart-$version';
     }
-    return UrlHelper(domain, path, scheme, signKey, params).getURL();
+    return UrlHelper(domain, path, scheme, signKey, newParam).getURL();
   }
 
-  static List<int> targetWidths(int begin, int end, int tol) {
+  static BuiltList<int> targetWidths(int begin, int end, int tol) {
     return computeTargetWidths(
         begin.toDouble(), end.toDouble(), tol.toDouble());
   }
@@ -99,34 +100,34 @@ class UrlBuilder {
 
   String createSrcSet(String path,
       {Map<String, String>? params,
-      int begin = MIN_WIDTH,
-      int end = MAX_WIDTH,
-      int tol = SRCSET_WIDTH_TOLERANCE,
+      int begin = minWidth,
+      int end = maxWidth,
+      int tol = srcsetWidthTolerance,
       bool disableVariableQuality = false,
       Iterable<int>? targets}) {
-    params ??= SplayTreeMap();
+    final srcsetParams = SplayTreeMap<String, String>.of(params ?? {});
     if (targets?.isNotEmpty == true) {
-      return createSrcSetPairs(path, params, targets!);
-    } else if (isDpr(params)) {
-      return createSrcSetDPR(path, params, disableVariableQuality);
+      return createSrcSetPairs(path, srcsetParams, targets!);
+    } else if (isDpr(srcsetParams)) {
+      return createSrcSetDPR(path, srcsetParams, disableVariableQuality);
     } else {
       var targets = targetWidths(begin, end, tol);
-      return createSrcSetPairs(path, params, targets);
+      return createSrcSetPairs(path, srcsetParams, targets);
     }
   }
 
   String createSrcSetDPR(
       String path, Map<String, String> params, bool disableVariableQuality) {
-    var srcset = StringBuffer();
-    Map<String, String> srcsetParams = HashMap<String, String>.of(params);
+    final srcset = StringBuffer();
+    final srcsetParams = HashMap<String, String>.of(params);
 
-    var has_quality = params['q'] != null;
+    final hasQuality = srcsetParams['q'] != null;
 
-    for (final ratio in TARGET_RATIOS) {
+    for (final ratio in targetRatios) {
       srcsetParams['dpr'] = ratio.toString();
 
-      if (!disableVariableQuality && !has_quality) {
-        srcsetParams['q'] = DPR_QUALITIES[ratio - 1].toString();
+      if (!disableVariableQuality && !hasQuality) {
+        srcsetParams['q'] = dprQualities[ratio - 1].toString();
       }
       srcset.write(createURL(path, srcsetParams));
       srcset.write(' ');
@@ -147,19 +148,20 @@ class UrlBuilder {
   /// of `targetWidths`. Meaning, `begin`, `end`, and `tol` are
   /// to be whole integers, but computation requires `double`s. This
   /// function hides this detail from callers.
-  static List<int> computeTargetWidths(double begin, double end, double tol) {
+  static BuiltList<int> computeTargetWidths(
+      double begin, double end, double tol) {
     if (_notCustom(begin, end, tol)) {
-      return List<int>.of(SRCSET_TARGET_WIDTHS);
+      return BuiltList<int>.of(srcsetTargetWidths);
     }
 
-    var resolutions = <int>[];
+    final resolutions = <int>[];
     if (begin == end) {
       // `begin` has not been mutated; cast back to `int`.
       resolutions.add(begin.toInt());
-      return resolutions;
+      return BuiltList.of(resolutions);
     }
 
-    while (begin < end && begin < MAX_WIDTH) {
+    while (begin < end && begin < maxWidth) {
       // Round values so that the resulting `int` is truer
       // to expectations (i.e. 115.99999 --> 116).
       resolutions.add(begin.round());
@@ -172,7 +174,7 @@ class UrlBuilder {
       resolutions.add(end.toInt());
     }
 
-    return resolutions;
+    return BuiltList.of(resolutions);
   }
 
   bool isDpr(Map<String, String> params) {
@@ -193,11 +195,13 @@ class UrlBuilder {
 
   String createSrcSetPairs(
       String path, Map<String, String> params, Iterable<int> targets) {
-    var srcset = StringBuffer();
+    final srcset = StringBuffer();
 
-    for (var width in targets) {
-      params['w'] = width.toString();
-      srcset.write(createURL(path, params));
+    final srcSetParams = Map.of(params);
+
+    for (final width in targets) {
+      srcSetParams['w'] = width.toString();
+      srcset.write(createURL(path, srcSetParams));
       srcset.write(' ');
       srcset.write(width);
       srcset.writeln('w,');
@@ -208,9 +212,9 @@ class UrlBuilder {
   }
 
   static bool _notCustom(double begin, double end, double tol) {
-    var defaultBegin = (begin == MIN_WIDTH);
-    var defaultEnd = (end == MAX_WIDTH);
-    var defaultTol = (tol == SRCSET_WIDTH_TOLERANCE);
+    var defaultBegin = (begin == minWidth);
+    var defaultEnd = (end == maxWidth);
+    var defaultTol = (tol == srcsetWidthTolerance);
 
 // A list of target widths is _NOT_ custom if `begin`, `end`,
 // and `tol` are equal to their default values.

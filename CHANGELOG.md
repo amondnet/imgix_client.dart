@@ -1,3 +1,10 @@
+## 3.0.0
+
+- fix: an error is raised if params is immutable 
+- feat: dart 3.0.0
+- ci: use dart action
+- build: updated the SDK lower-bound to 3.0.
+
 ## 2.0.0
 
 - feat: null safety
