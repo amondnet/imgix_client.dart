@@ -1,5 +1,6 @@
 import 'dart:collection';
 import 'dart:convert';
+
 import 'package:crypto/crypto.dart';
 import 'package:quiver/strings.dart';
 
@@ -16,7 +17,7 @@ class UrlHelper {
       Map<String, String> parameters = const {}])
       : _parameters = SplayTreeMap.of(parameters) {
     if (!_path.startsWith('/')) {
-      _path = '/' + _path;
+      _path = '/$_path';
     }
   }
 
@@ -64,7 +65,7 @@ class UrlHelper {
       } else {
         encodedValue = Uri.encodeComponent(v);
       }
-      queryPairs.add(k + '=' + encodedValue);
+      queryPairs.add('$k=$encodedValue');
     }
 
     var query = queryPairs.join('&');
@@ -72,7 +73,7 @@ class UrlHelper {
     var decodedPath = Uri.decodeComponent(_path.substring(1));
     if (decodedPath.startsWith('http://') ||
         decodedPath.startsWith('https://')) {
-      _path = '/' + Uri.encodeComponent(decodedPath);
+      _path = '/${Uri.encodeComponent(decodedPath)}';
     }
 
     if (isNotBlank(_signKey)) {
@@ -81,9 +82,9 @@ class UrlHelper {
       var signature = md5.convert(utf8.encode(toSign)).toString();
 
       if (query.isNotEmpty) {
-        query += '&s=' + signature;
+        query += '&s=$signature';
       } else {
-        query = 's=' + signature;
+        query = 's=$signature';
       }
 
       return buildURL(_scheme, _domain, _path, query);
@@ -133,7 +134,7 @@ class UrlHelper {
   }
 
   static String decodeURIComponent(String s) {
-    var result;
+    String result;
 
     try {
       result = Uri.decodeComponent(s);

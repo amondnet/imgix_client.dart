@@ -8,13 +8,13 @@ import 'package:test/test.dart';
 void main() {
   group('srcSet', () {
     Map<String, String> params;
-    late var srcsetSplit;
-    late var srcsetWidthSplit;
-    late var srcsetHeightSplit;
-    late var srcsetAspectRatioSplit;
-    late var srcsetWidthAndHeightSplit;
-    late var srcsetWidthAndAspectRatioSplit;
-    late var srcsetHeightAndAspectRatioSplit;
+    late List<String> srcsetSplit;
+    late List<String> srcsetWidthSplit;
+    late List<String> srcsetHeightSplit;
+    late List<String> srcsetAspectRatioSplit;
+    late List<String> srcsetWidthAndHeightSplit;
+    late List<String> srcsetWidthAndAspectRatioSplit;
+    late List<String> srcsetHeightAndAspectRatioSplit;
     setUp(() {
       String srcset,
           srcsetWidth,
@@ -24,7 +24,8 @@ void main() {
           srcsetWidthAndAspectRatio,
           srcsetHeightAndAspectRatio;
 
-      var ub = UrlBuilder('test.imgix.net', true, 'MYT0KEN', false);
+      var ub = UrlBuilder('test.imgix.net',
+          useHttps: true, signKey: 'MYT0KEN', includeLibraryParam: false);
       params = HashMap<String, String>();
 
       srcset = ub.createSrcSet('image.jpg');
@@ -130,7 +131,7 @@ void main() {
 
     /// a 17% testing threshold is used to account for rounding
     test('testNoParametersDoesNotIncreaseMoreThan17Percent', () {
-      final INCREMENT_ALLOWED = .17;
+      final incrementAllowed = .17;
       String? width;
       int widthInt, prev;
 
@@ -142,7 +143,7 @@ void main() {
         width = src.split(' ')[1];
         widthInt = int.parse(width!.substring(0, width.length - 1));
 
-        assert((widthInt / prev) < (1 + INCREMENT_ALLOWED));
+        assert((widthInt / prev) < (1 + incrementAllowed));
         prev = widthInt;
       }
     });
@@ -160,7 +161,7 @@ void main() {
         generatedSignature = src.substring(src.indexOf('s=') + 2);
 
         parameters = src.substring(src.indexOf('?'), src.indexOf('s=') - 1);
-        signatureBase = 'MYT0KEN/image.jpg' + parameters;
+        signatureBase = 'MYT0KEN/image.jpg$parameters';
 
         expectedSignature = md5Hex(signatureBase);
 
@@ -207,7 +208,7 @@ void main() {
         generatedSignature = src.substring(src.indexOf('s=') + 2);
 
         parameters = src.substring(src.indexOf('?'), src.indexOf('s=') - 1);
-        signatureBase = 'MYT0KEN/image.jpg' + parameters;
+        signatureBase = 'MYT0KEN/image.jpg$parameters';
         expectedSignature = md5Hex(signatureBase);
         expect(generatedSignature, expectedSignature);
       }
@@ -292,7 +293,7 @@ void main() {
       assert(maxWidthInt <= 8192);
     });
     test('testHeightDoesNotIncreaseMoreThan17Percent', () {
-      final INCREMENT_ALLOWED = .17;
+      final incrementAllowed = .17;
       String? width;
       int widthInt, prev;
 
@@ -304,7 +305,7 @@ void main() {
         width = src.split(' ')[1];
         widthInt = int.parse(width.substring(0, width.length - 1));
 
-        assert((widthInt / prev) < (1 + INCREMENT_ALLOWED));
+        assert((widthInt / prev) < (1 + incrementAllowed));
         prev = widthInt;
       }
     });
@@ -321,7 +322,7 @@ void main() {
         generatedSignature = src.substring(src.indexOf('s=') + 2);
 
         parameters = src.substring(src.indexOf('?'), src.indexOf('s=') - 1);
-        signatureBase = 'MYT0KEN/image.jpg' + parameters;
+        signatureBase = 'MYT0KEN/image.jpg$parameters';
 
         // create MD5 hash
         expectedSignature = md5Hex(signatureBase);
@@ -338,7 +339,7 @@ void main() {
         generatedRatio = src.split(' ')[1];
         expect(
           generatedRatio,
-          expectedRatio.toString() + 'x',
+          '${expectedRatio}x',
         );
         expectedRatio++;
       }
@@ -357,7 +358,7 @@ void main() {
         generatedSignature = src.substring(src.indexOf('s=') + 2);
 
         parameters = src.substring(src.indexOf('?'), src.indexOf('s=') - 1);
-        signatureBase = 'MYT0KEN/image.jpg' + parameters;
+        signatureBase = 'MYT0KEN/image.jpg$parameters';
 
         expectedSignature = md5Hex(signatureBase);
         expect(generatedSignature, expectedSignature);
@@ -450,7 +451,7 @@ void main() {
     // a 17% testing threshold is used to account for rounding
 
     test('testAspectRatioDoesNotIncreaseMoreThan17Percent', () {
-      final INCREMENT_ALLOWED = .17;
+      final incrementAllowed = .17;
       String? width;
       int widthInt, prev;
 
@@ -462,7 +463,7 @@ void main() {
         width = src.split(' ')[1];
         widthInt = int.parse(width.substring(0, width.length - 1));
 
-        expect((widthInt / prev), lessThan((1 + INCREMENT_ALLOWED)));
+        expect((widthInt / prev), lessThan((1 + incrementAllowed)));
         prev = widthInt;
       }
     });
@@ -480,7 +481,7 @@ void main() {
         generatedSignature = src.substring(src.indexOf('s=') + 2);
 
         parameters = src.substring(src.indexOf('?'), src.indexOf('s=') - 1);
-        signatureBase = 'MYT0KEN/image.jpg' + parameters;
+        signatureBase = 'MYT0KEN/image.jpg$parameters';
         // create MD5 hash
         expectedSignature = md5Hex(signatureBase);
 
@@ -515,7 +516,7 @@ void main() {
         generatedSignature = src.substring(src.indexOf('s=') + 2);
 
         parameters = src.substring(src.indexOf('?'), src.indexOf('s=') - 1);
-        signatureBase = 'MYT0KEN/image.jpg' + parameters;
+        signatureBase = 'MYT0KEN/image.jpg$parameters';
 
         // create MD5 hash
         expectedSignature = md5Hex(signatureBase);
@@ -562,7 +563,7 @@ void main() {
         generatedSignature = src.substring(src.indexOf('s=') + 2);
 
         parameters = src.substring(src.indexOf('?'), src.indexOf('s=') - 1);
-        signatureBase = 'MYT0KEN/image.jpg' + parameters;
+        signatureBase = 'MYT0KEN/image.jpg$parameters';
 
         // create MD5 hash
         expectedSignature = md5Hex(signatureBase);
@@ -580,7 +581,8 @@ void main() {
       }
     });
     test('testDisableVariableQualityOffByDefault', () {
-      var ub = UrlBuilder('test.imgix.net', false, '', false);
+      var ub = UrlBuilder('test.imgix.net',
+          useHttps: false, signKey: '', includeLibraryParam: false);
       var params = HashMap<String, String>();
       params['w'] = '320';
       // Ensure calling 2-param `createSrcSet` yields same results as
@@ -598,8 +600,9 @@ void main() {
       expect(actualWith3Param, expected);
     });
     test('testDisableVariableQuality', () {
-      var ub = UrlBuilder('test.imgix.net', false, '', false);
-      var params = new HashMap<String, String>();
+      var ub = UrlBuilder('test.imgix.net',
+          useHttps: false, signKey: '', includeLibraryParam: false);
+      var params = HashMap<String, String>();
       params['w'] = '320';
       var actual = ub.createSrcSet('image.png',
           params: params, disableVariableQuality: true);
@@ -612,7 +615,8 @@ void main() {
       expect(actual, expected);
     });
     test('testDisableVariableQualityWithQuality', () {
-      var ub = UrlBuilder('test.imgix.net', false, '', false);
+      var ub = UrlBuilder('test.imgix.net',
+          useHttps: false, signKey: '', includeLibraryParam: false);
       var params = HashMap<String, String>();
       params['w'] = '320';
       params['q'] = '99';
@@ -627,7 +631,8 @@ void main() {
       expect(actual, expected);
     });
     test('testCreateSrcSetQandVariableQualityEnabled', () {
-      var ub = UrlBuilder('test.imgix.net', false, '', false);
+      var ub = UrlBuilder('test.imgix.net',
+          useHttps: false, signKey: '', includeLibraryParam: false);
       var params = HashMap<String, String>();
       params['ar'] = "4:3";
       params['h'] = '100';
@@ -644,7 +649,8 @@ void main() {
       expect(expected, actual);
     });
     test('testCreateSrcSetPairsBeginEnd', () {
-      var ub = UrlBuilder('test.imgix.net', false, '', false);
+      var ub = UrlBuilder('test.imgix.net',
+          useHttps: false, signKey: '', includeLibraryParam: false);
       var params = HashMap<String, String>();
       var actual =
           ub.createSrcSet('image.png', params: params, begin: 100, end: 380);
@@ -662,7 +668,8 @@ void main() {
       expect(actual, expected);
     });
     test('testCreateSrcSetTol', () {
-      var ub = UrlBuilder('test.imgix.net', false, '', false);
+      var ub = UrlBuilder('test.imgix.net',
+          useHttps: false, signKey: '', includeLibraryParam: false);
       var params = HashMap<String, String>();
       var actual = ub.createSrcSet('image.png', params: params, tol: 50);
       var expected = 'http://test.imgix.net/image.png?w=100 100w,\n'
@@ -677,8 +684,9 @@ void main() {
       expect(actual, expected);
     });
     test('testCreateSrcSetBeginEqualsEnd', () {
-      var ub = UrlBuilder('test.imgix.net', false, '', false);
-      var params = new HashMap<String, String>();
+      var ub = UrlBuilder('test.imgix.net',
+          useHttps: false, signKey: '', includeLibraryParam: false);
+      var params = HashMap<String, String>();
       var actual =
           ub.createSrcSet('image.png', params: params, begin: 640, end: 640);
       var expected = 'http://test.imgix.net/image.png?w=640 640w';
@@ -686,7 +694,8 @@ void main() {
       expect(expected, actual);
     });
     test('testCreateSrcSetWidthTargets', () {
-      var ub = UrlBuilder('test.imgix.net', false, '', false);
+      var ub = UrlBuilder('test.imgix.net',
+          useHttps: false, signKey: '', includeLibraryParam: false);
       var params = HashMap<String, String>();
       var actual = ub.createSrcSet('image.png',
           params: params, targets: [100, 200, 300, 400, 500, 600]);
