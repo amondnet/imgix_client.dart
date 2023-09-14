@@ -63,7 +63,7 @@ class UrlBuilder {
           domain, 'domain', 'At lease one domain must be passed to URLBuilder');
     } else if (!domainPattern.hasMatch(domain)) {
       throw ArgumentError.value(domain, 'domain',
-          'Domain must be passed in as a fully-qualified domain name and should not include a protocol or any path element, i.e. \"example.imgix.net\".');
+          'Domain must be passed in as a fully-qualified domain name and should not include a protocol or any path element, i.e. "example.imgix.net".');
     }
   }
 

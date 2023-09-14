@@ -110,7 +110,7 @@ class UrlHelper {
     return url;
   }
 
-  static String MD5(String input) {
+  static String convertMD5(String input) {
     var array = utf8.encode(input);
     return md5.convert(array).toString();
   }

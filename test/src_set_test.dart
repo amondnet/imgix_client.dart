@@ -107,7 +107,7 @@ void main() {
       for (var src in srcsetSplit) {
         generatedWidth = src.split(' ')[1];
         widthInt =
-            int.parse(generatedWidth!.substring(0, generatedWidth.length - 1));
+            int.parse(generatedWidth.substring(0, generatedWidth.length - 1));
         expect(widthInt, targetWidths[index]);
         index++;
       }
@@ -137,11 +137,11 @@ void main() {
 
       // convert and store first width (typically: 100)
       width = srcsetSplit[0].split(' ')[1];
-      prev = int.parse(width!.substring(0, width.length - 1));
+      prev = int.parse(width.substring(0, width.length - 1));
 
       for (var src in srcsetSplit) {
         width = src.split(' ')[1];
-        widthInt = int.parse(width!.substring(0, width.length - 1));
+        widthInt = int.parse(width.substring(0, width.length - 1));
 
         assert((widthInt / prev) < (1 + incrementAllowed));
         prev = widthInt;
@@ -184,14 +184,14 @@ void main() {
     test('testMd5 1', () {
       var sign = 'FOO123bar/users/1.png';
 
-      var signature = UrlHelper.MD5(sign);
+      var signature = UrlHelper.convertMD5(sign);
       expect(signature, '6797c24146142d5b40bde3141fd3600c');
     });
 
     test('testMd5 2', () {
       var sign = 'FOO123bar/http%3A%2F%2Favatars.com%2Fjohn-smith.png';
 
-      var signature = UrlHelper.MD5(sign);
+      var signature = UrlHelper.convertMD5(sign);
       expect(signature, '493a52f008c91416351f8b33d4883135');
     });
 
@@ -219,7 +219,7 @@ void main() {
 
       for (var i = 0; i < srcsetWidthSplit.length; i++) {
         src = srcsetWidthSplit[i].split(' ')[0];
-        assert(src!.contains('dpr=${i + 1}'));
+        assert(src.contains('dpr=${i + 1}'));
       }
     });
     test('testWidthSignsUrls', () {
@@ -299,7 +299,7 @@ void main() {
 
       // convert and store first width (typically: 100)
       width = srcsetHeightSplit[0].split(' ')[1];
-      prev = int.parse(width!.substring(0, width.length - 1));
+      prev = int.parse(width.substring(0, width.length - 1));
 
       for (String src in srcsetHeightSplit) {
         width = src.split(' ')[1];
@@ -457,7 +457,7 @@ void main() {
 
       // convert and store first width (typically: 100)
       width = srcsetAspectRatioSplit[0].split(' ')[1];
-      prev = int.parse(width!.substring(0, width.length - 1));
+      prev = int.parse(width.substring(0, width.length - 1));
 
       for (String src in srcsetAspectRatioSplit) {
         width = src.split(' ')[1];
