@@ -23,7 +23,10 @@ jobs:
           sdk: ${{ matrix.sdk }}
       - name: Install dependencies
         #working-directory: ${{ matrix.package }}
-        run: dart pub get
+        run: |
+          dart pub get
+          dart pub global activate coverage
+
 
       - name: Analyze
         #working-directory: ${{ matrix.package }}
@@ -31,9 +34,7 @@ jobs:
 
       - name: Run tests
         #working-directory: ${{ matrix.package }}
-        run: |
-          dart run test
-          dart run test_cov
+        run: dart pub global run coverage:test_with_coverage
 
       - name: Upload coverage to codecov
         uses: codecov/codecov-action@v1
